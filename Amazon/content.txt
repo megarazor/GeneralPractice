@@ -1,0 +1,21 @@
+1st round: debugging problems
+
+- Debug
+- Logical reasoning multiple choice
+- The online screens had a couple of SAT style questions and some debugging questions
+
+
+2nd round: technical questions
+
+- Level order tree traversal
+- Data structures and algorithms
+- Given an array of sorted characters and a target character, find the closest character from array. 
+- Understand the runtime and space complexity.
+- Find the minimum number of train stations required given a list of departure and arrival times
+
+3rd round: phone interview
+
+- Asked about projects then given tech questions. How to improve, etc.
+- Make sure to talk the solution through and work with with the engineer
+- Easy/Medium coding interview questions, OOP, data structures, and general knowledge of coding. May include some behavioral questions as well.
+- Data structures and string manipulation
