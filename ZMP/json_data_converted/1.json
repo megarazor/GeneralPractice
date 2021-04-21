@@ -1,0 +1,38 @@
+{
+    "1": {
+        "door": 1,
+        "item": 1,
+        "light": 0,
+        "unlock": 1
+    },
+    "2": {
+        "door": 1,
+        "item": 2,
+        "light": 1,
+        "unlock": 1
+    },
+    "3": {
+        "door": 1,
+        "item": 3,
+        "light": 1,
+        "unlock": 1
+    },
+    "4": {
+        "door": 1,
+        "item": 0,
+        "light": 1,
+        "unlock": 1
+    },
+    "5": {
+        "door": 1,
+        "item": 5,
+        "light": 1,
+        "unlock": 2
+    },
+    "6": {
+        "door": 1,
+        "item": 1,
+        "light": 1,
+        "unlock": 1
+    }
+}
