@@ -1,98 +1,109 @@
-
-eqs= []
-new_eq= input()
-while(new_eq != ""):
-    eqs.append(new_eq)
+def solve_set_of_equations():
+    print("Enter equations line by line (enter empty line to stop):")
+    # Getting equations from keyboard input
+    eqs= []
     new_eq= input()
+    while(new_eq != ""):
+        eqs.append(new_eq)
+        new_eq= input()
+    eqs_cnt= len(eqs)
 
-eqs_cnt= len(eqs)
-var_cnt= eqs_cnt
+    # Getting a list of variables
+    vars= []
+    for eq in eqs:
+        for c in eq:
+            if c >= 'a' and c <= 'z':
+                if c not in vars:
+                    vars.append(c)
 
-vars= []
+    vars_cnt= len(vars)
+    vars= sorted(vars)
 
-for eq in eqs:
-    for c in eq:
-        if c >= 'a' and c <= 'z':
-            if c not in vars:
-                vars.append(c)
-vars= sorted(vars)
-matrix = [[0]* (var_cnt + 1) for _ in range(var_cnt)]
+    # Impossible if there are more variables than equations
+    if vars_cnt != eqs_cnt:
+        print("Number of variables and number of equations must be the same")
+        return
 
-for i in range(len(eqs)):
-    left= 1
-    eq= eqs[i]
-    # print("at equation:", eq)
-    for j in range(len(eq)):
-        if eq[j] >= 'a' and eq[j] <= 'z':
-            var= eq[j]    
-            sign= 1
-            num= 1        
-            if j > 1:
-                # print("getting num/sign for var {0} mid sentence".format(var))
-                # print("before {0}: {1}".format(var, eq[j-1]))
-                if eq[j - 1] == '-':
+    # Solving using Gaussian Elimination
+    # Parse the equations into matrix
+
+    matrix = [[0]* (vars_cnt + 1) for _ in range(vars_cnt)]
+
+    for i in range(eqs_cnt):
+        var= '.'
+        sole_num= 0
+        on_left_side= 1
+        sign= 1
+        num= 0
+        eq= eqs[i]
+        eq_len= len(eq)
+        for j in range(eq_len):
+            c= eq[j]
+            if c == '-' or c == '+' or c == '=':
+                if j != 0:
+                    if eq[j - 1] != '=':
+                        if var != '.':
+                            if num == 0:
+                                num = 1
+                            var_index= vars.index(var)
+                            matrix[i][var_index]+= on_left_side * sign * num
+                        else:
+                            sole_num+= sign * on_left_side * num
+                        var= '.'
+                        num= 0
+                        sign= 1                        
+                if c == '-':
                     sign= -1
-                elif eq[j - 1] >= '0' and eq[j - 1] <= '9':
-                    # print("got num {0} for var {1}".format(eq[j-1], var))
-                    num= int(eq[j - 1])
-                    if eq[j - 2] >= '-':
-                        sign= -1
-            elif j > 0:
-                if eq[j - 1] >= '0' and eq[j - 1] <= '9':
-                    num= int(eq[j - 1])
-                    # print("got num {0} for var {1}".format(num, var))
-                elif eq[j - 1] >= '-':
-                    sign= -1
-            index= vars.index(var)
-            # print("sign, num, left:", sign, num, left)
-
-            matrix[i][index]= sign * num * left
-            # print("matrix[{0}][{1}]= {2}*{3}*{4}   {5}".format(i, index, sign, num, left, var))
-            # print(var, "has factor:", sign * num * left)
-        elif eq[j] == '=':
-            left= -1
-        elif eq[j] >= '0' and eq[j] <= '9':
-            sign= 1
-            if j < len(eq) - 1:
-                if eq[j + 1] < 'a' or eq[j + 1] > 'z':
-                    if eq[j - 1] == '-':
-                        sign= -1
-                    matrix[i][var_cnt]= int(eq[j]) * sign * left * -1
-                    # print("matrix[{0}][{1}]= {2}".format(i, var_cnt, eq[j]))
-            elif j == len(eq) - 1:
-                if eq[j - 1] == '-':
-                    sign= -1
-                matrix[i][var_cnt]= int(eq[j]) * sign * left * -1
-                # print("matrix[{0}][{1}]= {2}".format(i, var_cnt, eq[j]))
-    # print()     
-            
-print(matrix)
-
-for col in range(len(matrix[0]) - 1):
-    for row in range(col, len(matrix)):
-        if row == col:
-            n= matrix[row][col]
-            if n == 0:
-                for i in range(row + 1, len(matrix)):
-                    if matrix[i][col] != 0:
-                        tmp= matrix[i]
-                        matrix[i]= matrix[row]
-                        matrix[row]= tmp
-                        n= matrix[row][col]
-            for i in range(len(matrix[row])):
-                matrix[row][i]/= n
+                elif c == '+':
+                    sign= 1
+                else:
+                    on_left_side = -1
+            elif c >= 'a' and c <= 'z':
+                var= c
+            elif c >= '0' and c <= '9':
+                num*= 10
+                num+= int(c)
+        if var != '.':
+            if num == 0:
+                num = 1
+            var_index= vars.index(var)
+            matrix[i][var_index]+= on_left_side * sign * num
         else:
-            n= matrix[row][col]
-            for i in range(len(matrix[row])):
-                matrix[row][i]-= n * matrix[col][i]
+            sole_num+= sign * on_left_side * num
+        matrix[i][vars_cnt]= -1 * sole_num
 
-print(matrix)
-        
-res= [0] * var_cnt
-for i in range(len(res) - 1, -1, -1):
-    n= 0
-    for j in range(i + 1, len(matrix[i]) - 1):
-        n+= matrix[i][j] * res[j]
-    res[i]= matrix[i][len(matrix[i]) - 1] - n
+    # Turn the matrix into row echelon form
 
-print(res)
+    for col in range(vars_cnt):
+        for row in range(col, eqs_cnt):
+            if row == col:
+                n= matrix[row][col]
+                if n == 0:
+                    for i in range(row + 1, eqs_cnt):
+                        if matrix[i][col] != 0:
+                            tmp= matrix[i]
+                            matrix[i]= matrix[row]
+                            matrix[row]= tmp
+                            n= matrix[row][col]
+                for i in range(vars_cnt + 1):
+                    matrix[row][i]/= n
+            else:
+                n= matrix[row][col]
+                for i in range(vars_cnt + 1):
+                    matrix[row][i]-= n * matrix[col][i]
+
+    # Plugging variables to equations
+
+    res= [0] * vars_cnt
+    for i in range(vars_cnt - 1, -1, -1):
+        n= 0
+        for j in range(i + 1, vars_cnt):
+            n+= matrix[i][j] * res[j]
+        res[i]= matrix[i][vars_cnt] - n
+
+    # Print the results
+
+    for i in range(vars_cnt):
+        print("{} = {}".format(vars[i], res[i]))
+
+solve_set_of_equations()
