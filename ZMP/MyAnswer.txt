@@ -1,0 +1,42 @@
+< For questions in New-Grads.txt >
+
+1. Write a function to find the angle between the minute and hour hand in an analog clock. (Python and C++)
+	
+	Please have a look at "clock_angle.py" and "clock_angle.cpp"
+
+2. What is a virtual function in C++ and how does the compiler handle them?
+	
+	In C++, a virtual function is a base class's member function, overridden by a derived class.
+
+	The compiler handles virtual functions with runtime binding via VPTR and VTABLE. When a virtual function is declared in the base class and is overridden in a derived class, if at runtime that function is called by a pointer of the base class, the overridden version of it will be called. This is a way to achieve polymorphism. (demonstrated in source code "virtual_function.cpp")
+
+	How the compiler performs that is that each time an object of a class with a virtual function is generated, a virtual pointer VPTR is added to it as a member, pointing to the VTABLE of that class. Every time the virtual function is called, C++ must go to that VTABLE to determine the correct mapping to call the right function. All of that means two additional costs to use virtual functions: extra memory and extra performance steps.
+
+3. Write a command-line program to evaluate a set of equations. (must be C++) (Python and bash are optional plus)
+    Like:
+    a=b+4
+    b=c+d
+    d=4
+    c=3+2
+	
+	Please have a look at "equation_set.cpp" and "equation_set.py"
+
+< For questions in interview_questions.pdf >
+
+1. Suffix With Unit
+	
+	Please have a look at "suffix_with_unit.py"
+
+2. JSON Manipulation and Bash Scripting
+2a. JSON Manipulation
+	
+	Please have a look at "json_manipulate.py"
+	
+2b. Bash Scripting
+
+	Please have a look at json_manipulate.sh
+	This also requires file "json_manipulate_files.py" and 2 folders "json_data" and "json_data_converted"
+
+3. Ground plane detection
+
+	Please have a look at "ground_plane_detection.html" or "ground_plane_detection.ipynb"
