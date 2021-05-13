@@ -1,3 +1,5 @@
+Source codes are in "codes" folder.
+
 < For questions in New-Grads.txt >
 
 1. Write a function to find the angle between the minute and hour hand in an analog clock. (Python and C++)
@@ -34,8 +36,12 @@
 	
 2b. Bash Scripting
 
-	Please have a look at json_manipulate.sh
+	Please have a look at "json_manipulate.sh". 
 	This also requires file "json_manipulate_files.py" and 2 folders "json_data" and "json_data_converted"
+	
+	My execution time is only about 0.005. However, if the execution time was over 10 seconds, I would:
+		1. Figure out what is the time-consuming bottleneck. This is most likely the file reading/writing time. There can be other reasons, such as the time complexity of my loop, execution environment, etc.
+		2. Fix the issue. If it takes long due to I/O operations, I will change my implementation to bulk read/write files all at one time, not iterating through files and read/write one at a time like the current implementation.
 
 3. Ground plane detection
 
